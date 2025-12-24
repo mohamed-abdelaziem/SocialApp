@@ -1,0 +1,153 @@
+<div class="min-h-screen flex items-center justify-center">
+
+
+<form [formGroup]="registerForm" (ngSubmit)="handleregisterForm()" class="bg-white p-4 rounded-xl w-[90%] md:w-1/2 my-10   mx-auto">
+  <div class="mb-5">
+    <label for="name-alternative" class="block mb-2.5 text-sm font-medium text-heading">name</label>
+    <input formControlName="name" formControlName="name" [class.!border-red-500]="registerForm.get('name')?.errors && registerForm.get('name')?.touched" [class.!border-main]="!registerForm.get('name')?.errors && registerForm.get('name')?.touched" type="name" id="name-alternative" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base outline-none ring-0 focus:border-transparent block w-full px-3 py-2.5 shadow placeholder:text-body" placeholder="Please Write Mail..." required />
+    @if (registerForm.get('name')?.touched) {
+        @if (registerForm.get('name')?.getError('required')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">Email is Required </span> 
+</div>
+        }
+
+               @if (registerForm.get('name')?.getError('name')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">Please Write Valid name</span> 
+</div>
+        }
+    }
+
+</div>
+  <div class="mb-5">
+    <label for="email-alternative" class="block mb-2.5 text-sm font-medium text-heading">email</label>
+    <input formControlName="email" [class.!border-red-500]="registerForm.get('email')?.errors && registerForm.get('email')?.touched" [class.!border-main]="!registerForm.get('email')?.errors && registerForm.get('email')?.touched" formControlName="email" type="email" id="email-alternative" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base ring-0  block w-full px-3 py-2.5 shadow  outline-none placeholder:text-body" placeholder="Please Write Email..." required />
+ 
+@if (registerForm.get('email')?.touched) {
+
+@if (registerForm.get('email')?.getError('required')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">email Is Required</span> 
+
+</div>
+}
+
+
+}
+
+</div>
+
+
+
+
+  <div class="mb-5">
+    <label for="password-alternative" class="block mb-2.5 text-sm font-medium text-heading">password</label>
+    <input formControlName="password" [class.!border-red-500]="registerForm.get('password')?.errors && registerForm.get('password')?.touched" [class.!border-main]="!registerForm.get('password')?.errors && registerForm.get('password')?.touched" formControlName="password" type="password" id="password-alternative" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base ring-0  block w-full px-3 py-2.5 shadow  outline-none placeholder:text-body" placeholder="••••••••" required />
+ 
+@if (registerForm.get('password')?.touched) {
+
+@if (registerForm.get('password')?.getError('required')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">Password Is Required</span> 
+</div>
+}
+@if (registerForm.get('password')?.getError('pattern')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">Your password should be at least 8 characters long and must include an uppercase letter, a lowercase letter, a number, and a special character.</span> 
+</div>
+}
+
+}
+
+</div>
+
+
+  <div class="mb-5">
+    <label for="rePassword-alternative" class="block mb-2.5 text-sm font-medium text-heading">rePassword</label>
+    <input formControlName="rePassword" [class.!border-red-500]="registerForm.get('rePassword')?.errors && registerForm.get('rePassword')?.touched" [class.!border-main]="!registerForm.get('rePassword')?.errors && registerForm.get('rePassword')?.touched" formControlName="rePassword" type="password" id="password-alternative" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base ring-0  block w-full px-3 py-2.5 shadow  outline-none placeholder:text-body" placeholder="••••••••" required />
+ 
+@if (registerForm.get('rePassword')?.touched) {
+
+@if (registerForm.get('rePassword')?.getError('required')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">rePassword Is Required</span> 
+</div>
+}
+@if (registerForm.hasError('passwordMismatch')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">please match rePassword with password</span> 
+</div>
+}
+
+
+}
+
+</div>
+
+<div class="gender-container space-y-2 mb-5">
+<div class="flex items-center ">
+    <input formControlName="gender" id="default-radio-1" type="radio"  value="male" name="gender" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+      <label for="default-radio-1" class="select-none ms-2 text-sm font-medium text-heading">Male</label>
+
+  </div>
+<div class="flex items-center ">
+    <input  formControlName="gender"  type="radio"  name="gender" value="female" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+        <label for="default-radio-1" class="select-none ms-2 text-sm font-medium text-heading">Female</label>
+  </div>
+@if (registerForm.get('gender')?.touched) {
+
+@if (registerForm.get('gender')?.getError('required')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">Gender Is Required</span> 
+</div>
+}
+
+
+}
+</div>
+<div class="date-of-birth">
+<div class="relative w-full mb-5">
+  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+    <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/></svg>
+  </div>
+  <input formControlName="dateOfBirth" datepicker id="default-datepicker" type="date" (change)="getDateValue($event)" class="block w-full ps-9 pe-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Select date">
+</div>
+ @if (registerForm.get('dateOfBirth')?.touched) {
+
+@if (registerForm.get('dateOfBirth')?.getError('required')) {
+            <div class="p-4 my-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+  <span class="font-medium">Date Of Birth Is Required</span> 
+</div>
+}
+
+
+
+
+}
+</div>
+
+
+
+<div class="flex  mb-5 not-last-of-type:items-center justify-between">
+  <button [disabled]="registerForm.invalid" [class.!opacity-40]="registerForm.invalid"  type="submit" class="text-white cursor-pointer bg-main box-border border border-transparent hover:bg-main-strong focus:ring-4 focus:ring-main-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+    @if (isLoading()) {
+      Loading...
+    }@else {
+      Submit
+    }
+
+  </button>
+   <div>
+     <p class="font-semibold text-sm text-main cursor-pointer mb-3" (click)="route.navigateByUrl('/auth/login')">Login ?</p>
+   </div>
+</div>
+
+
+
+
+
+</form>
+
+
+</div>

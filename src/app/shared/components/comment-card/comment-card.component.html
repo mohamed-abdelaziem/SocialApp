@@ -1,0 +1,126 @@
+<div class="comment-card bg-gray-200 rounded-xl p-2 md:p-3 my-2">
+<div class=" flex justify-between items-center">
+      <div class="post-details items-center flex gap-3">
+        <div class="image">
+          <!-- user photo -->
+          @if (comment().commentCreator.photo.includes("undefined")) {
+                      <img src="./images/person.png" class="size-10 rounded-[50%] block" alt="" />
+          }@else {
+        <img [src]="comment().commentCreator.photo" class="size-10 rounded-[50%] block" alt="" />
+
+          }
+
+        </div>
+        <div class="post-info">
+          <p class="text-[18px]">{{comment().commentCreator.name}}</p>
+          <p class="text-sm text-gray-500">{{comment().createdAt | date:"short"}}</p>
+        </div>
+      </div>
+
+
+           <div class="three-dots relative ">
+        <i
+        [class.!hidden]="comment().commentCreator._id !=userData._id"
+        (click)="dropDown.classList.toggle('hidden')"
+      id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="inline-flex text-main items-center justify-center fa-solid fa-ellipsis cursor-pointer" type="button"
+        ></i>
+
+        <div #dropDown class="z-10 hidden absolute top-[100%] right-0 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+    <ul class="p-2 text-sm text-body font-medium">
+      <li>
+        <a class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" (click)="isShow=true; commentContent.setValue(comment().content)" >Update</a>
+      </li>
+      <li>
+        <a class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" (click)="deleteComment(comment()._id)">Delete</a>
+      </li>
+
+    </ul>
+</div>
+
+
+
+
+        
+
+        
+
+
+      </div>
+
+
+</div>
+<p class="mt-5">{{comment().content}}</p>
+
+</div>
+
+
+
+<div
+
+     [class.!flex]="isShow" class="fixed hidden inset-0  z-50 bg-black/50 items-center justify-center h-screen layer"
+    >
+      <div
+        class="flex flex-col justify-center p-3 gap-2 rounded-xl w-[95%] md:w-1/2 bg-white"
+      >
+        <div class="flex items-center justify-between">
+          <i
+            class="fa-solid fa-xmark cursor-pointer" 
+            (click)="isShow = false"
+            
+          ></i>
+        </div>
+       
+   
+          
+        <div
+          class="flex items-center w-full justify-between p-2 gap-x-2 mx-auto rounded-xl bg-gray-100"
+        >
+          <textarea
+            id="chat"
+            [value]="comment().content"
+            [formControl]="commentContent"
+            [class.!border-green-500]="commentContent.valid && commentContent.touched"
+            [class.!border-red-500]="commentContent.invalid && commentContent.touched"
+            rows="4"
+            class="bg-neutral-primary-medium border ring-0 border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 placeholder:text-body"
+            placeholder="Your message..."
+          ></textarea>
+
+          <button
+            (click)="updateComment(comment().id , commentContent.value!)"
+            type="submit"
+            class="inline-flex justify-center p-2 text-fg-brand rounded-full cursor-pointer hover:bg-brand-softer"
+          >
+            <svg
+              class="w-6 h-6 rotate-90 rtl:-rotate-90"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5"
+              />
+            </svg>
+            <span class="sr-only">Send message</span>
+          </button>
+        </div>
+
+        @if (commentContent.getError('required') && commentContent.touched) {
+        <div
+          class="p-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          <span class="font-medium">Filed is Required</span>
+        </div>
+        }
+     
+
+      </div>
+    </div>

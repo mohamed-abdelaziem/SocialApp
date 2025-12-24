@@ -1,0 +1,129 @@
+<div class="profile-image  w-[95%] md:w-[80%] mx-auto bg-gray-50 p-1 md:p-3 rounded-xl space-y-5">
+<div class="profile-header flex items-center justify-between gap-2">
+<div class="flex md:items-center flex-col md:flex-row ">
+<img [src]="user.photo" class="size-30 md:size-40 object-cover  cursor-pointer" alt="">
+
+</div>
+<button  (click)="modelIsShow = true" class="px-3 py-2.5 block ] md:w-fit bg-main text-white rounded cursor-pointer text-[15px]">Change Photo </button>
+</div>
+
+<div class="flex md:items-center  flex-col md:flex-row gap-8">
+<p><span class="font-medium">Your Name</span> : <br> <span class="text-gray-500 font-semibold">{{user.name ? user.name : 'user name'}}</span></p>
+<p><span class="font-medium">Your Mail</span> : <br> <span class="text-gray-500 font-semibold">{{user.email ? user.email : 'example@gmail.com'}}</span></p>
+<p><span class="font-medium">Your DateBith</span> : <br> <span class="text-gray-500 font-semibold">{{user?.dateOfBirth ? user.dateOfBirth: '25 - 8 - 2003'}}</span></p>
+</div>
+
+
+<div class="flex items-center justify-end gap-2">
+<button routerLink="/auth/forget-password" class="px-3 py-2.5 block bg-main text-white rounded cursor-pointer">Change Password ? </button>
+<button (click)="logOut()" class="px-3 py-2.5 block bg-red-500 text-white rounded cursor-pointer">Log Out ? </button>
+
+</div>
+
+
+ <div
+    [class.!flex]="modelIsShow"
+      class="fixed hidden z-50 inset-0 bg-black/50 z-50 items-center justify-center h-screen layer"
+    >
+      <div
+        class="flex flex-col justify-center p-3 gap-2 rounded-xl w-[95%] md:w-1/2 bg-white"
+      >
+        <div class="flex items-center justify-between">
+          <p>File Name : {{fileName ? fileName : ''}} </p>
+          <i
+            class="fa-solid fa-xmark cursor-pointer"
+            (click)="modelIsShow = false"
+          ></i>
+        </div>
+        <label
+          for="dropzone-file"
+            [class.!border-red-500]="!fileName"
+            [class.!border-green-500]="fileName"
+          class="flex flex-col items-center justify-center w-full h-64 bg-neutral-secondary-medium border-2  border-dashed border-default-strong rounded-base cursor-pointer hover:bg-neutral-tertiary-medium"
+        >
+          <div
+            class="flex flex-col items-center justify-center text-body pt-5 pb-6"
+          >
+            <svg
+              class="w-8 h-8 mb-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"
+              />
+            </svg>
+            <p class="mb-2 text-sm">
+              <span class="font-semibold">Click to upload</span> or drag and
+              drop
+            </p>
+            <p class="text-xs">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+          </div>
+
+          <input
+          
+            (change)="foundFile($event)"
+            id="dropzone-file"
+            type="file"
+            class="hidden"
+          />
+
+
+
+          </label>
+
+          <button (click)="uploadImage()" class="px-3 py-2.5 block w-fit self-end bg-green-500 text-white rounded cursor-pointer">
+            @if (isLoadin) {
+                Loading..
+            }@else {
+                Upload
+            }
+            
+
+        </button>
+
+
+          </div>
+
+
+
+
+          
+
+
+
+</div>
+<!-- show posts -->
+          <button (click)="showUserPosts()" class="px-3 py-2.5 block bg-main text-white rounded cursor-pointer">Show Posts</button>
+
+
+@if (posts.length !== 0) {
+<p class="text-main text-[25px] my-10 font-semibold">Your Posts : </p>
+<div class="space-x-2">
+       @for (post of posts; track $index) {
+         <app-post-card [post]="post"></app-post-card>
+       }
+
+    </div>
+}@else {
+   <div
+          class="p-4 my-4 text-sm text-[18px] text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          <span class="font-medium">Not Found Posts</span>
+        </div>
+}
+
+
+</div>
+
+
+

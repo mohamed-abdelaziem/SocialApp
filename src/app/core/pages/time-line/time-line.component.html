@@ -1,0 +1,147 @@
+<!-- create post input -->
+
+<div class="w-[95%] md:w-[60%] mx-auto space-y-2">
+  <!-- create post input -->
+
+  <div
+    class="bg-white p-2 rounded-xl w-full mx-auto flex items-center justify-center"
+  >
+    <div class="w-full">
+      <input
+        type="text"
+        (click)="isShow = true"
+        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-2xl focus:ring-brand focus:border-brand block w-full px-3 py-3 placeholder:text-body"
+        placeholder="What are you thinking?"
+        required
+      />
+    </div>
+
+    <div
+      [class.!flex]="isShow"
+      class="fixed hidden inset-0 bg-black/50 z-50 items-center justify-center h-screen layer"
+    >
+      <div
+        class="flex flex-col justify-center p-3 gap-2 rounded-xl w-[95%] md:w-1/2 bg-white"
+      >
+        <div class="flex items-center justify-between">
+          <p>File Name : {{ fileName?.name ? fileName?.name : "" }}</p>
+          <i
+            class="fa-solid fa-xmark cursor-pointer"
+            (click)="isShow = false"
+          ></i>
+        </div>
+        <label
+          for="dropzone-file"
+          [class.!border-green-500]="fileName"
+          class="flex flex-col items-center justify-center w-full h-64 bg-neutral-secondary-medium border border-dashed border-default-strong rounded-base cursor-pointer hover:bg-neutral-tertiary-medium"
+        >
+          <div
+            class="flex flex-col items-center justify-center text-body pt-5 pb-6"
+          >
+            <svg
+              class="w-8 h-8 mb-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"
+              />
+            </svg>
+            <p class="mb-2 text-sm">
+              <span class="font-semibold">Click to upload</span> or drag and
+              drop
+            </p>
+            <p class="text-xs">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+          </div>
+
+          <input
+            (change)="foundFileName($event)"
+            id="dropzone-file"
+            type="file"
+            class="hidden"
+          />
+        </label>
+        @if (!fileName) {
+        <div
+          class="p-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          <span class="font-medium">Please Upload Photo</span>
+        </div>
+        }@else {
+        <div
+          class="p-4 text-sm text-fg-success-strong rounded-base bg-success-soft"
+          role="alert"
+        >
+          <span class="font-medium">File Uploaded Success</span>
+        </div>
+        }
+        <div
+          class="flex items-center w-full justify-between p-2 gap-x-2 mx-auto rounded-xl bg-gray-100"
+        >
+          <textarea
+            id="chat"
+            [class.!border-green-500]="
+              !postContent.getError('required') && postContent.touched
+            "
+            [class.!border-red-500]="
+              postContent.getError('required') && postContent.touched
+            "
+            [formControl]="postContent"
+            form
+            rows="4"
+            class="bg-neutral-primary-medium border ring-0 border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 placeholder:text-body"
+            placeholder="Your message..."
+          ></textarea>
+
+          <button
+            (click)="createPost()"
+            type="submit"
+            class="inline-flex justify-center p-2 text-fg-brand rounded-full cursor-pointer hover:bg-brand-softer"
+          >
+            <svg
+              class="w-6 h-6 rotate-90 rtl:-rotate-90"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5"
+              />
+            </svg>
+            <span class="sr-only">Send message</span>
+          </button>
+        </div>
+        @if (postContent.getError('required') && postContent.touched) {
+        <div
+          class="p-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          <span class="font-medium">Filed is Required</span>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="space-x-2">
+    @for (post of posts; track $index) {
+    <app-post-card [post]="post"></app-post-card>
+    }
+  </div>
+</div>

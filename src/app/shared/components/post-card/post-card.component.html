@@ -1,0 +1,224 @@
+
+  <div   class="post-card bg-white p-2 md:p-3 w-full rounded-xl cursor-pointer">
+    <!-- post header -->
+    <div class="flex gap-3 justify-between items-center">
+      <!-- post details -->
+      <div class="post-details items-center flex gap-3">
+        <div class="image">
+          <!-- user photo -->
+          <img [src]="post().user.photo || './images/person.png'" class="size-10 rounded-[50%] block object-cover" alt="" />
+        </div>
+        <div class="post-info">
+          <p class="text-[18px]">{{post().user.name}}</p>
+          <p class="text-sm text-gray-500">{{post().createdAt | date : "short"}}</p>
+        </div>
+      </div>
+
+      <!-- three dots -->
+      <div class="three-dots relative ">
+        <i
+        [class.!hidden]="post().user._id != userData._id" 
+        (click)="dropDown.classList.toggle('hidden')"
+      id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="inline-flex text-main items-center justify-center fa-solid fa-ellipsis cursor-pointer" type="button"
+        ></i>
+
+        <div #dropDown class="z-10 hidden absolute top-[100%] right-0 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+    <ul class="p-2 text-sm text-body font-medium">
+      <li>
+        <a   class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" (click)="isShow = true; postContent.setValue(post().body!) ;">Update</a>
+      </li>
+      <li>
+        <a  class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" (click)="deletePost(post().id)">Delete</a>
+      </li>
+    </ul>
+</div>
+
+        
+
+        
+
+
+      </div>
+    </div>
+
+    <p [routerLink]="['/main/post-details/',post().id]"  class="leading-5 text-[15px] my-5 text-start">{{post()?.body}}</p>
+
+
+    <!-- post photo -->
+    <div class="post-photo">
+ @if (post().image?.includes("undefined")) {
+    <img src="./download.png" class="w-full" alt="">
+ }@else if (!post().image) {
+      <img src="./images/download.png" class="w-full" alt="">
+ }@else {
+    <img [src]="post().image" class="w-full" alt="">
+ }
+    </div>
+
+    <!-- show comments button -->
+    <button class="text-[15px] my-5 flex font-semibold text-main cursor-pointer" (click)="showComments(post().id)" [class.hidden]="post().comments.length == 0">Show Comments</button>
+
+<div class="space-x-4">
+  @for (item of comments?.slice(0,20); track $index) {
+
+      <app-comment-card [comment]="item"  ></app-comment-card>
+  }
+
+  </div>
+
+<!-- create comment -->
+<div class="flex items-center justify-between p-2 gap-x-2  mx-auto rounded-xl my-5 bg-gray-100">
+ <textarea [formControl]="commentContent" [class.!border-red-500]="commentContent.getError('required') && commentContent.touched" id="chat" rows="1" class=" bg-neutral-primary-medium border ring-0 border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 placeholder:text-body" placeholder="Your message..."></textarea>
+
+ 
+ <button  (click)="createComment({post : post().id , content : commentContent.value!})" type="submit" class="inline-flex justify-center p-2 text-fg-brand rounded-full cursor-pointer hover:bg-brand-softer">
+            <svg class="w-6 h-6 rotate-90 rtl:-rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5"/></svg>
+            <span class="sr-only">Send message</span>
+        </button>
+</div>
+
+ @if (commentContent.getError('required') && commentContent.touched) {
+
+<div class="p-4  text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+<span class="font-medium">Please Fill This Filed</span> 
+</div>
+
+ }          
+ 
+
+
+<div
+
+     [class.!flex]="isShow" class="fixed hidden inset-0  z-50 bg-black/50 items-center justify-center h-screen layer"
+    >
+      <div
+        class="flex flex-col justify-center p-3 gap-2 rounded-xl w-[95%] md:w-1/2 bg-white"
+      >
+        <div class="flex items-center justify-between">
+          @if (imageFile) {
+            <p>File Name : {{imageFile.name}} </p>
+          }@else if (post().image) {
+            <p>File Name : {{post().image}}</p>
+          }
+          <i
+            class="fa-solid fa-xmark cursor-pointer" 
+            (click)="isShow = false"
+            
+          ></i>
+        </div>
+       
+        <label
+          for="dropzone-file-2"
+          [class.!border-green-500]="imageFile?.name"
+          [class.!border-red-500]="!imageFile?.name"
+          class="flex flex-col items-center justify-center w-full h-64 bg-neutral-secondary-medium border border-dashed border-default-strong rounded-base cursor-pointer hover:bg-neutral-tertiary-medium"
+        >
+          <div
+            class="flex flex-col items-center justify-center text-body pt-5 pb-6"
+          >
+            <svg
+              class="w-8 h-8 mb-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"
+              />
+            </svg>
+            <p class="mb-2 text-sm">
+              <span class="font-semibold">Click to upload</span> or drag and
+              drop
+            </p>
+            <p class="text-xs">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+          </div>
+
+          <input
+         (change)="FoundImageFile($event)"
+            id="dropzone-file-2"
+            type="file"
+            class="hidden"
+          />
+        </label>
+          @if (!imageFile) {
+        <div
+          class="p-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          <span class="font-medium">Please Upload Photo</span>
+        </div>
+        }@else {
+        <div
+          class="p-4 text-sm text-fg-success-strong rounded-base bg-success-soft"
+          role="alert"
+        >
+          <span class="font-medium">File Uploaded Success</span>
+        </div>
+        }
+        <div
+          class="flex items-center w-full justify-between p-2 gap-x-2 mx-auto rounded-xl bg-gray-100"
+        >
+          <textarea
+            id="chat"
+            [value]="post().body"
+            [formControl]="postContent"
+            [class.!border-green-500]="postContent.valid && postContent.touched"
+            [class.!border-red-500]="postContent.invalid && postContent.touched"
+            rows="4"
+            class="bg-neutral-primary-medium border ring-0 border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 placeholder:text-body"
+            placeholder="Your message..."
+          ></textarea>
+
+          <button
+            (click)="updatePosT()"
+            type="submit"
+            class="inline-flex justify-center p-2 text-fg-brand rounded-full cursor-pointer hover:bg-brand-softer"
+          >
+            <svg
+              class="w-6 h-6 rotate-90 rtl:-rotate-90"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5"
+              />
+            </svg>
+            <span class="sr-only">Send message</span>
+          </button>
+        </div>
+
+        @if (postContent.getError('required') && postContent.touched) {
+        <div
+          class="p-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          <span class="font-medium">Filed is Required</span>
+        </div>
+        }
+     
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  
+    
