@@ -53,11 +53,13 @@ if(this.commentContent.valid){
 this._commentService.updateComment(commentId , content).subscribe({
 next : (res)=>{
 this.tostar.success('Comment Is Updated');
+this.isShow = false;
 this.commentContent.reset();
 console.log(res);
 },
 error:(err)=>{
-console.log(err);
+this.tostar.error('Please Try Again');
+window.location.reload();
 }
 })
 
