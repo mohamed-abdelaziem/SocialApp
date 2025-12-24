@@ -1,5 +1,4 @@
 import { CookieService } from 'ngx-cookie-service';
-import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -15,26 +14,26 @@ export class PostsService {
  _authService = inject(AuthserviceService);
  
   getAllPosts():Observable<ResponseOfPost>{
-   return this.http.get<ResponseOfPost>(`${environment.endPointOfPosts}` , {headers : {toekn : this.cookie.get('token')}});
+   return this.http.get<ResponseOfPost>(`https://linked-posts.routemisr.com/posts` , {headers : {toekn : this.cookie.get('token')}});
   }
 
 
   createPost(data : FormData):Observable<any>{
-    return this.http.post<any>(`${environment.endPointOfPosts}`, data);
+    return this.http.post<any>(`https://linked-posts.routemisr.com/posts`, data);
   }
 
   getSinglePost(postId : string):Observable<any>{
-    return this.http.get<any>(`${environment.endPointOfPosts}/${postId}`);
+    return this.http.get<any>(`https://linked-posts.routemisr.com/posts/${postId}`);
   }
 
 
   updatePost(data : FormData , postId : string):Observable<any>{
-  return  this.http.put<any>(`${environment.endPointOfPosts}/${postId}` , data);
+  return  this.http.put<any>(`https://linked-posts.routemisr.com/posts/${postId}` , data);
   }
 
 
   deletePost(postId:string):Observable<any>{
-    return this.http.delete(`${environment.endPointOfPosts}/${postId}`);
+    return this.http.delete(`https://linked-posts.routemisr.com/posts/${postId}`);
   }
 
 }

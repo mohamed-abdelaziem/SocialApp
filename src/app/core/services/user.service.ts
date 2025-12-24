@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
 export interface ResponseOfUser {
   message: string
   user: UserData
 }
+
+
+
+
 
 export interface UserData {
   _id: string
@@ -25,7 +28,7 @@ export class UserService {
 private http = inject(HttpClient); 
   
 getUserData():Observable<ResponseOfUser>{
-return this.http.get<ResponseOfUser>(`${environment.endPointOfUser}`)
+return this.http.get<ResponseOfUser>(`https://linked-posts.routemisr.com/users/profile-data`)
 }
 
 uploadImageProfile(photo : FormData):Observable<any>{
