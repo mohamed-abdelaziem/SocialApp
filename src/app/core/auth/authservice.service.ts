@@ -1,7 +1,7 @@
+import { environment } from '../../../../src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
