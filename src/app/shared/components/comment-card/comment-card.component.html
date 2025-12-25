@@ -20,7 +20,7 @@
 
            <div class="three-dots relative ">
         <i
-        [class.!hidden]="comment().commentCreator._id !=userData._id"
+        [class.!hidden]="comment().commentCreator._id != userData._id"
         (click)="dropDown.classList.toggle('hidden')"
       id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="inline-flex text-main items-center justify-center fa-solid fa-ellipsis cursor-pointer" type="button"
         ></i>
@@ -31,7 +31,7 @@
         <a class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" (click)="isShow=true; commentContent.setValue(comment().content)" >Update</a>
       </li>
       <li>
-        <a class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" (click)="deleteComment(comment()._id)">Delete</a>
+        <a class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" (click)="deleteComment(comment().id)">Delete</a>
       </li>
 
     </ul>

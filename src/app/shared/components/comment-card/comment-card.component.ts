@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { UserData, UserService } from '../../../core/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { LoaderService } from '../../../core/services/loader.service';
 
 @Component({
   selector: 'app-comment-card',
@@ -17,6 +18,7 @@ export class CommentCardComponent {
 comment = input.required<CommentOfPost>(); 
 _userService = inject(UserService);
 commentCliked = output<string>();
+_loaderService = inject(LoaderService);
 userData !: UserData;
 isShow  = false;
 commentContent = new FormControl('' , [Validators.required])
@@ -34,13 +36,21 @@ ngOnInit(): void {
 
 
 deleteComment(commentId:string){
+this._loaderService.isLoading.set(true);
 this._commentService.deleteComment(commentId).subscribe({
 next : (res)=>{
 this.tostar.success('Comment is Deleted');
-window.location.reload();
+this.isShow = false;
+console.log(res);
+this._loaderService.isLoading.set(false);
+console.log("Comment Creator : ",this.comment().commentCreator);
 },
 error:(err)=>{
-this.tostar.error('Please Try Again')
+console.log(commentId);
+console.log(err);
+this.isShow = false;
+this.tostar.error('Please Try Again');
+this._loaderService.isLoading.set(false);
 }
 })
 }
@@ -55,11 +65,11 @@ next : (res)=>{
 this.tostar.success('Comment Is Updated');
 this.isShow = false;
 this.commentContent.reset();
-console.log(res);
+this._loaderService.isLoading.set(false);
 },
 error:(err)=>{
 this.tostar.error('Please Try Again');
-window.location.reload();
+this._loaderService.isLoading.set(false);
 }
 })
 

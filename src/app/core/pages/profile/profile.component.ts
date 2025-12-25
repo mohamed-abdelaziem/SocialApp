@@ -6,10 +6,11 @@ import { UserData, UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { PostCardComponent } from "../../../shared/components/post-card/post-card.component";
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-profile',
-  imports: [RouterLink, DatePipe, PostCardComponent],
+  imports: [RouterLink, PostCardComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
@@ -25,16 +26,20 @@ imageFile !: File | null;
 fileName !: string;
 myDataOfImage !: FormData;
 isLoadin : boolean = false ;
+private _loaderService = inject(LoaderService);
 userId !: string ;
 ngOnInit(): void {
+  this._loaderService.isLoading.set(true);
   this._userService.getUserData().subscribe({
     next : (res)=>{
+      this._loaderService.isLoading.set(false);
       this.user = res.user;
       this.userId = this.user._id;
       this.tostar.success('Welcome To Profile Page');
     },
     error : (err)=>{
       this.tostar.error("Can't Get Your Data");
+      this._loaderService.isLoading.set(false);
     }
 
 
@@ -44,7 +49,7 @@ ngOnInit(): void {
 
 logOut(){
 this._cookieService.delete('token');
-this.route.navigate(['/auth/login'])
+this.route.navigate(['/auth/login']);
 }
 
 
@@ -71,17 +76,18 @@ return;
 
 
 uploadImage(){
+this._loaderService.isLoading.set(true);
 if(this.fileName){
-
 this.isLoadin = true ;
 this._userService.uploadImageProfile(this.myDataOfImage).subscribe({
 next : (res)=>{
 console.log(res);
-this.isLoadin = false ;
+this._loaderService.isLoading.set(false);
 },
 
 error : (err)=>{
 this.isLoadin = false;
+this._loaderService.isLoading.set(false);
 }
 
 })
@@ -94,10 +100,15 @@ this.isLoadin = false;
 
 
 showUserPosts(){
+this._loaderService.isLoading.set(true);
 this._userService.getUserPost(this.userId,2).subscribe({
 next : (res)=>{
 this.posts = res.posts;
 console.log(this.posts);
+this._loaderService.isLoading.set(false);
+},
+error : (err)=>{
+this._loaderService.isLoading.set(false);
 }
 
 })

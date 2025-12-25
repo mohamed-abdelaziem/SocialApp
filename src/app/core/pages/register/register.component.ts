@@ -18,7 +18,7 @@ route  = inject(Router);
 dateValue = '';
 passwordConfirm = false;
 isLoading = signal<boolean>(false)
-  cookie = inject(CookieService)
+cookie = inject(CookieService);
 private _authService = inject(AuthserviceService);
 // register form controller 
 registerForm = new FormGroup(

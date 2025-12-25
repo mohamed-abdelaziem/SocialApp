@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { PostsService } from '../../services/posts.service';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-post-details',
@@ -33,21 +34,24 @@ _userService = inject(UserService);
 userData !: UserData;
 tostar = inject(ToastrService);
 isShow : boolean = false;
+_loaderService = inject(LoaderService);
 ngOnInit(): void {
 this.activteRoute.paramMap.subscribe((params)=>{
 const id = params.get('id');
 console.log(id);
-
+this._loaderService.isLoading.set(true);
 this._postService.getSinglePost(id!).subscribe({
 next : (res)=>{
 this.post = res.post;
+this._loaderService.isLoading.set(false);
 }
 })
 })
-
+this._loaderService.isLoading.set(true);
   this._userService.getUserData().subscribe({
     next:(res)=>{
       this.userData = res.user;
+      this._loaderService.isLoading.set(false);
     }
   })
 
@@ -56,12 +60,15 @@ this.post = res.post;
 
 
   showComments(postId : string){
+    this._loaderService.isLoading.set(true);
       this._commentsService.getAllComments(postId).subscribe(({
       next : (res)=>{
         this.comments = res.comments;
+        this._loaderService.isLoading.set(false);
       },
       error : (err)=>{
         console.log(err);
+        this._loaderService.isLoading.set(false);
       }
 
 
@@ -78,13 +85,16 @@ this.post = res.post;
  
   
   createComment({post , content} : {post : string , content : string}){
+    this._loaderService.isLoading.set(true);
     this._commentsService.createComment({post,content}).subscribe({
       next : (res)=>{
         console.log(res);
         this.comments = res.comments;
+        this._loaderService.isLoading.set(false);
       },
       error : (err)=>{
         console.log(err);
+        this._loaderService.isLoading.set(false);
         
       }
     })
@@ -112,13 +122,17 @@ if(this.imageFile?.name && this.postContent.valid){
 const data = new FormData();
 data.append('body' , this.postContent.value!);
 data.append('image' , this.imageFile!);
+this._loaderService.isLoading.set(true);
 this._postService.updatePost(data,this.post.id).subscribe({
 next:(res)=>{
 this.tostar.success('Post Updated');
-window.location.reload();
+this.postContent.reset();
+this.isShow = false;
 },
 error:(err)=>{
 this.tostar.error('Please Try Again');
+this._loaderService.isLoading.set(false);
+this.isShow = false;
 }
 })
 
@@ -133,13 +147,15 @@ this.postContent.markAllAsTouched();
 
 
 deletePost(postId : string){
+this._loaderService.isLoading.set(true);
 this._postService.deletePost(postId).subscribe({
 next : (res)=>{
 this.tostar.success('Post is Deleted Success');
-window.location.reload();
+this._loaderService.isLoading.set(false);
 },
 error:(err)=>{
 this.tostar.error('You Are Not Allowed To Do That');
+this._loaderService.isLoading.set(false);
 }
 })
 

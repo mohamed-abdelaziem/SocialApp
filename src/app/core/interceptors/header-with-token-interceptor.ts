@@ -5,7 +5,7 @@ import { inject } from '@angular/core';
 export const headerWithTokenInterceptor: HttpInterceptorFn = (req, next) => {
 const cookie = inject(CookieService);
 req = req.clone({setHeaders:{
-"token" : cookie.get('token')
+"token" : cookie.get('token') || ''
 }});
 
 

@@ -1,3 +1,4 @@
+import { CookieService } from 'ngx-cookie-service';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -12,7 +13,7 @@ conent : string
 })
 export class CommentsService {
 private http = inject(HttpClient);
-
+private cookie = inject(CookieService);
 getAllComments(postId : string):Observable<any>{
 return this.http.get<any>(`https://linked-posts.routemisr.com/posts/${postId}/comments`);
 }
@@ -24,8 +25,8 @@ return this.http.post<any>(`https://linked-posts.routemisr.com/comments`, {post,
 
 
 
-deleteComment(commentId : string){
-return this.http.delete(`https://linked-posts.routemisr.com/comments/${commentId}`)
+deleteComment(commentId : string):Observable<any>{
+return this.http.delete<any>(`https://linked-posts.routemisr.com/comments/${commentId}`)
 }
 
 

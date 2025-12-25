@@ -38,7 +38,7 @@ this._authService.login(this.loginForm.value!).subscribe({
 next : (res)=>{
 this.isLoading.set(false);
 this.cookie.set('token' , res.token);
-this.route.navigate(['/main'])
+this.route.navigate(['/main']);
 this.tostar.success('Login Success');
 },
 
