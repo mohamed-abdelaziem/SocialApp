@@ -66,10 +66,12 @@ this.tostar.success('Comment Is Updated');
 this.isShow = false;
 this.commentContent.reset();
 this._loaderService.isLoading.set(false);
+console.log(res);
 },
 error:(err)=>{
 this.tostar.error('Please Try Again');
 this._loaderService.isLoading.set(false);
+window.location.reload();
 }
 })
 

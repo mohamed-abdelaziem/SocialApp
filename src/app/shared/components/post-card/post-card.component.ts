@@ -77,10 +77,12 @@ ngOnInit(): void {
         this.tostar.success('Comment Is Created Success');
         this.commentContent.reset();
         this._loaderService.isLoading.set(false);
+        this.isShow = false;
       },
       error : (err)=>{
        this.tostar.error('Please Try Again');
        this._loaderService.isLoading.set(false);
+       this.isShow = false
         
       }
     })
@@ -116,8 +118,11 @@ next:(res)=>{
 this.tostar.success('Post Updated');
 this._loaderService.isLoading.set(false);
 this.isShow = false;
+window.location.reload();
 },
 error:(err)=>{
+this.isShow = false;
+window.location.reload();
 this._loaderService.isLoading.set(false);
 this.tostar.error('Please Try Again');
 }
@@ -139,6 +144,8 @@ this._postService.deletePost(postId).subscribe({
 next : (res)=>{
 this.tostar.success('Post is Deleted Success');
 this._loaderService.isLoading.set(false);
+this.isShow = false;
+window.location.reload();
 },
 error:(err)=>{
 this.tostar.error('You Are Not Allowed To Do That');
